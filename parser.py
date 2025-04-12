@@ -52,8 +52,11 @@ class EvtxParser:
 
     def get_record_count(self) -> int:
         """Return the total number of records in the EVTX file"""
+        count = 0
         with evtx.Evtx(self.file_path) as evtx_file:
-            return evtx_file.chunks_table.count
+            for _ in evtx_file.records():
+                count += 1
+        return count
 
     def get_records(self, limit: Optional[int] = None, debug: bool = False, 
                    render_messages: bool = True) -> List[Dict[str, Any]]:
